@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poker Variant Mixer &amp; House Rulebook</title>
+  <style>
+    :root {
+      --bg-base: #0a0f14;
+      --bg-surface: #111921;
+      --bg-elevated: #18232e;
+      --bg-card-hover: #1e2c3a;
+      --border: #263545;
+      --emerald: #10b981;
+      --emerald-dark: #059669;
+      --emerald-glow: rgba(16, 185, 129, 0.16);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.15);
+      --purple: #8b5cf6;
+      --rose: #f43f5e;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.08), transparent 38%),
+        radial-gradient(circle at 85% 10%, rgba(245, 158, 11, 0.06), transparent 35%);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: rgba(17, 25, 33, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--emerald), #047857);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-base);
+      padding: 0.35rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.55rem 1rem;
+      border-radius: 7px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+    }
+
+    .nav-tab.active {
+      background: var(--bg-elevated);
+      color: var(--emerald);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge-count {
+      background: var(--emerald-glow);
+      color: var(--emerald);
+      font-size: 0.75rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.6rem 1.05rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      transition: all 0.18s ease;
+    }
+
+    .btn:hover {
+      background: var(--bg-card-hover);
+      border-color: #384e64;
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: #042f2e;
+      border-color: var(--emerald);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #34d399;
+      border-color: #34d399;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #1c1917;
+      border-color: #f59e0b;
+      font-weight: 700;
+    }
+
+    .btn-gold:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-danger {
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.35);
+      background: rgba(244, 63, 94, 0.08);
+    }
+
+    .btn-danger:hover {
+      background: rgba(244, 63, 94, 0.2);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .section-view {
+      display: none;
+    }
+
+    .section-view.active {
+      display: block;
+      animation: fadeIn 0.22s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toolbar / Filters */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background: var(--bg-surface);
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.65rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--emerald);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pill {
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill:hover, .pill.active {
+      border-color: var(--emerald);
+      color: var(--emerald);
+      background: var(--emerald-glow);
+    }
+
+    /* Variant Cards Grid */
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .variant-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      position: relative;
+    }
+
+    .variant-card:hover {
+      transform: translateY(-2px);
+      border-color: #364b61;
+      box-shadow: var(--shadow);
+    }
+
+    .variant-card.selected-for-mix {
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 1px var(--emerald), var(--shadow);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .tag-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.22rem 0.55rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .tag-core {
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .tag-hybrid {
+      background: var(--gold-glow);
+      color: var(--gold);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .tag-custom {
+      background: rgba(139, 92, 246, 0.16);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+    }
+
+    .spec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin: 0.65rem 0 1rem;
+      font-size: 0.86rem;
+    }
+
+    .spec-item {
+      background: var(--bg-base);
+      padding: 0.45rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid rgba(38, 53, 69, 0.7);
+    }
+
+    .spec-label {
+      color: var(--text-dim);
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    .card-summary {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 1.15rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .card-actions .btn {
+      flex: 1;
+    }
+
+    /* Mixer Studio Layout */
+    .mixer-hero {
+      background: linear-gradient(145deg, var(--bg-surface), #13222b);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .mixer-hero h2 {
+      font-size: 1.45rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .mixer-hero p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      max-width: 780px;
+    }
+
+    .mixer-slots {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    @media (max-width: 900px) {
+      .mixer-slots {
+        grid-template-columns: 1fr;
+      }
+      .slot-plus {
+        text-align: center;
+      }
+    }
+
+    .mix-slot {
+      background: var(--bg-base);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      min-height: 138px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .mix-slot.filled {
+      border-style: solid;
+      border-color: var(--emerald);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .mix-slot.optional-slot {
+      opacity: 0.85;
+    }
+
+    .slot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .slot-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .slot-plus {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--emerald);
+    }
+
+    .mixer-picker-bar {
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .picker-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+
+    .picker-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .picker-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .picker-chip:hover {
+      border-color: var(--emerald);
+      background: var(--bg-elevated);
+    }
+
+    .picker-chip.in-slot {
+      background: var(--emerald);
+      color: #042f2e;
+      border-color: var(--emerald);
+      font-weight: 700;
+    }
+
+    .mixer-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    /* Generated Rulebook Output */
+    .rulebook-output {
+      background: var(--bg-surface);
+      border: 1px solid var(--emerald);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .rulebook-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .editable-title-input {
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-size: 1.55rem;
+      font-weight: 800;
+      padding: 0.45rem 0.75rem;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .editable-title-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .qr-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.75rem;
+      background: var(--bg-base);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .qr-table th, .qr-table td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .qr-table th {
+      background: var(--bg-elevated);
+      color: var(--emerald);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .street-blocks {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .street-card {
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+    }
+
+    .street-card h4 {
+      color: var(--emerald);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .street-card p {
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .harmony-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .harmony-box h4 {
+      color: var(--gold);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.55rem;
+    }
+
+    .harmony-box ul {
+      padding-left: 1.25rem;
+      color: var(--text-main);
+      font-size: 0.9rem;
+    }
+
+    .harmony-box li {
+      margin-bottom: 0.35rem;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 12, 0.82);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--bg-base);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--emerald);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--emerald);
+      color: var(--text-main);
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 200;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.25s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media print {
+      header, .mixer-hero, .nav-tabs, .no-print { display: none !important; }
+      body { background: #fff; color: #000; }
+      .rulebook-output { border: none; box-shadow: none; background: #fff; color: #000; }
+      .street-card, .qr-table, .harmony-box { background: #f8fafc; color: #000; border-color: #cbd5e1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">&#9824;</div>
+        <div>
+          <h1>Poker Variant Mixer</h1>
+          <span>House Rulebook Library &amp; Automated Ruleset Synthesizer</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="library" onclick="switchTab('library')">
+          Variant Library <span class="badge-count" id="libraryCount">12</span>
+        </button>
+        <button class="nav-tab" data-tab="mixer" onclick="switchTab('mixer')">
+          Variant Mixer <span class="badge-count" id="mixerSlotBadge">0/3</span>
+        </button>
+        <button class="nav-tab" data-tab="table" onclick="switchTab('table')">
+          Quick-Reference Sheet
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ Add Variant</button>
+        <button class="btn btn-sm" onclick="openSyncModal()">GitHub Sync / Export</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: VARIANT LIBRARY -->
+    <section id="view-library" class="section-view active">
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search variants by name, mechanic, hole cards, or board..." oninput="renderLibrary()" />
+        </div>
+        <div class="filter-pills" id="filterPills">
+          <button class="pill active" data-filter="all" onclick="setFilter('all', this)">All Variants</button>
+          <button class="pill" data-filter="core" onclick="setFilter('core', this)">Core Rulebook (12)</button>
+          <button class="pill" data-filter="hybrid" onclick="setFilter('hybrid', this)">Mixed Hybrids</button>
+          <button class="pill" data-filter="custom" onclick="setFilter('custom', this)">Custom Added</button>
+        </div>
+      </div>
+
+      <div class="variants-grid" id="variantsGrid"></div>
+    </section>
+
+    <!-- TAB 2: VARIANT MIXER STUDIO -->
+    <section id="view-mixer" class="section-view">
+      <div class="mixer-hero">
+        <h2>Variant Combination &amp; Rule Synthesis Engine</h2>
+        <p>Select <strong>2 or 3 variants</strong> below. The rule engine analyzes each game's starting deal, exposure rules, street discards, board geometry, and showdown constraints to synthesize a cohesive, conflict-free house variant ready for your table.</p>
+
+        <div class="mixer-slots" id="mixerSlotsContainer"></div>
+
+        <div class="mixer-picker-bar">
+          <div class="picker-title">Click Variants to Add or Remove from the Mixer:</div>
+          <div class="picker-chips" id="pickerChips"></div>
+        </div>
+
+        <div class="mixer-cta-row">
+          <button class="btn btn-gold" onclick="runSynthesis()">Analyze &amp; Synthesize Ruleset</button>
+          <button class="btn" onclick="randomizeMix()">Surprise Mix (2 Random)</button>
+          <button class="btn btn-danger" onclick="clearMixer()">Clear Selection</button>
+        </div>
+      </div>
+
+      <div id="synthesisOutputContainer"></div>
+    </section>
+
+    <!-- TAB 3: QUICK REFERENCE TABLE -->
+    <section id="view-table" class="section-view">
+      <div class="toolbar">
+        <div>
+          <h2 style="font-size:1.2rem;">Master Quick-Reference Variant Summary</h2>
+          <p style="color:var(--text-muted); font-size:0.86rem;">Pre-game dealer cheat sheet including all core, custom, and saved hybrid variants.</p>
+        </div>
+        <button class="btn btn-sm" onclick="window.print()">Print Rulebook</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="qr-table" id="masterQuickRefTable">
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>Type</th>
+              <th>Starting Deal</th>
+              <th>Board Structure</th>
+              <th>Core Mechanic &amp; Showdown</th>
+            </tr>
+          </thead>
+          <tbody id="masterQuickRefBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: VIEW FULL RULES -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 id="detailTitle" style="font-size:1.35rem;"></h3>
+          <span id="detailBadge" class="tag-badge tag-core" style="margin-top:0.35rem; display:inline-block;"></span>
+        </div>
+        <button class="close-btn" onclick="closeModal('detailModal')">&times;</button>
+      </div>
+      <div id="detailBody"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD NEW VARIANT -->
+  <div class="modal-backdrop" id="addModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Add New Poker Variant</h3>
+        <button class="close-btn" onclick="closeModal('addModal')">&times;</button>
+      </div>
+      <form id="addVariantForm" onsubmit="handleCreateVariant(event)">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Variant Name *</label>
+            <input type="text" id="newVarName" required placeholder="e.g., Pineapple Omaha, Crazy Pineapple, Tahoe..." />
+          </div>
+
+          <div class="form-group">
+            <label>Starting Hole Cards *</label>
+            <select id="newHoleCards">
+              <option value="2">2 Hole Cards</option>
+              <option value="3">3 Hole Cards</option>
+              <option value="4" selected>4 Hole Cards</option>
+              <option value="5">5 Hole Cards</option>
+              <option value="6">6 Hole Cards</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Hand Grouping / Visibility</label>
+            <select id="newDealStyle">
+              <option value="single-down">Standard (All Face-Down)</option>
+              <option value="half-up">Fuji Style (Half Face-Up / Half Down)</option>
+              <option value="pairs">Split into 2-Card Hold'em Hands</option>
+              <option value="triples">Split into 3-Card Hands</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Board Structure</label>
+            <select id="newBoardStyle">
+              <option value="standard">Standard 5-Card Board (Flop, Turn, River)</option>
+              <option value="grid-3x3">3x3 Grid (9 Cards, Line Selection)</option>
+              <option value="street-purge">Street Purges (Deal Extra, Blind Purges)</option>
+              <option value="ocean">Standard Board + Variable River Ocean</option>
+              <option value="graveyard">Standard Board + Graveyard Folded Cards</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Street Discard Mechanic</label>
+            <select id="newDiscardRule">
+              <option value="none">No Hole-Card Discards</option>
+              <option value="flop-1">Discard 1 Card After Flop</option>
+              <option value="progressive-1">Discard 1 After Flop, Turn &amp; River</option>
+              <option value="hand-flop-turn">Discard 1 Sub-Hand on Flop &amp; Turn</option>
+              <option value="hand-turn">Discard 1 Sub-Hand on Turn</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label>Showdown Hand Construction *</label>
+            <select id="newShowdownRule">
+              <option value="holdem">Hold'em (Use 0, 1, or 2 hole cards + board)</option>
+              <option value="omaha-exact-2">Omaha (Must use EXACTLY 2 hole cards + 3 board)</option>
+              <option value="any-hole">Flexible (Use ANY number of hole + board cards)</option>
+              <option value="grid-line-3">Grid Line (2 hole cards + 1 straight line of 3)</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label>Quick-Reference Summary (Starting Deal / Board / Core Mechanic) *</label>
+            <input type="text" id="newQuickSummary" required placeholder="e.g., 3 hole cards, discard 1 after flop, standard Hold'em showdown." />
+          </div>
+
+          <div class="form-group full">
+            <label>Full Detailed Ruleset Explanation *</label>
+            <textarea id="newFullRules" rows="4" required placeholder="Write the complete street-by-street explanation for the rulebook..."></textarea>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.5rem;">
+          <button type="button" class="btn" onclick="closeModal('addModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to Variant Library</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: GITHUB SYNC / EXPORT -->
+  <div class="modal-backdrop" id="syncModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>GitHub Repository Sync &amp; Backup</h3>
+        <button class="close-btn" onclick="closeModal('syncModal')">&times;</button>
+      </div>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">
+        Your custom and mixed variants are automatically saved in this browser. To publish newly added variants permanently to your public GitHub Pages site for everyone, download <code>variants.json</code> below and upload it to the root of your GitHub repository (replacing the existing <code>variants.json</code>).
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.65rem; margin-bottom:1.25rem;">
+        <button class="btn btn-primary" onclick="downloadVariantsJson()">Download variants.json</button>
+        <button class="btn" onclick="copyVariantsJson()">Copy JSON to Clipboard</button>
+        <label class="btn" style="cursor:pointer;">
+          Import JSON File
+          <input type="file" accept=".json" style="display:none;" onchange="importVariantsJson(event)" />
+        </label>
+      </div>
+      <div style="border-top:1px solid var(--border); padding-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.82rem; color:var(--text-dim);">Reset browser storage back to the 12 core variants:</span>
+        <button class="btn btn-danger btn-sm" onclick="resetLibrary()">Reset Local Edits</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ==========================================================================
+       1. CORE 12 POKER VARIANTS (FROM CUSTOM POKER VARIANTS RULEBOOK)
+       ========================================================================== */
+    const CORE_VARIANTS = [
+      {
+        id: "texas-holdem",
+        name: "Texas Hold'em",
+        origin: "core",
+        quickDeal: "2 hole cards",
+        quickBoard: "5-card community board (flop, turn, river)",
+        quickMechanic: "Standard Hold'em hand construction using hole and community cards.",
+        fullRules: "Each player receives two hole cards. Community cards are dealt across three streets—flop, turn, and river—to form a five-card board, and players build their best five-card poker hand using any combination of their two hole cards and the five community cards.",
+        dna: {
+          holeCards: 2,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "holdem"
+        }
+      },
+      {
+        id: "omaha",
+        name: "Omaha",
+        origin: "core",
+        quickDeal: "4 hole cards",
+        quickBoard: "5-card community board (flop, turn, river)",
+        quickMechanic: "Standard Omaha hand construction (must use 2 hole cards and 3 board cards).",
+        fullRules: "Each player receives four hole cards and plays them across a five-card community board dealt over the flop, turn, and river using standard Omaha hand rules: every player must use exactly two of their four hole cards and exactly three community board cards to make their five-card hand.",
+        dna: {
+          holeCards: 4,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "omaha-exact-2"
+        }
+      },
+      {
+        id: "watermelon",
+        name: "Watermelon",
+        origin: "core",
+        quickDeal: "5 hole cards",
+        quickBoard: "5-card community board",
+        quickMechanic: "Discard 1 card after flop (4 left), 1 after turn (3 left), and 1 after river (2 left) before betting; Hold'em hand.",
+        fullRules: "Players start with five hole cards and keep all five pre-flop. Each player must discard one card before the betting round begins on each subsequent street, then play a Hold'em hand on a five-card community board:\n• After the Flop: Discard 1 card, leaving 4 hole cards before betting begins.\n• After the Turn: Discard 1 card, leaving 3 hole cards before betting begins.\n• After the River: Discard 1 card, leaving 2 hole cards before betting begins.",
+        dna: {
+          holeCards: 5,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "1-card", turn: "1-card", river: "1-card" },
+          showdown: "holdem"
+        }
+      },
+      {
+        id: "graveyard",
+        name: "Graveyard",
+        origin: "core",
+        quickDeal: "2 hole cards (Texas Hold'em base)",
+        quickBoard: "5-card community board + folded cards",
+        quickMechanic: "Folded cards go immediately to the board upon folding; folding out of turn is strictly forbidden.",
+        fullRules: "Played on a standard Texas Hold'em structure with a five-card community board. Whenever a player folds, their folded cards are placed immediately onto the board and become live community cards for remaining players. Folding out of turn is strictly illegal because cards enter the board in real time during the hand.",
+        dna: {
+          holeCards: 2,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: true,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "holdem"
+        }
+      },
+      {
+        id: "fuji-poker",
+        name: "Fuji Poker",
+        origin: "core",
+        quickDeal: "Half face-up, half face-down (e.g., 2 up / 2 down in Omaha)",
+        quickBoard: "Standard community board",
+        quickMechanic: "Dealer deals first half face-up and second half face-down; exposed cards stay visible throughout the hand.",
+        fullRules: "Played with a standard community board, except half of each player's hole cards are dealt face-up and remain exposed throughout the entire hand (for example, in an Omaha hand, two cards are exposed and two are dealt face-down). The dealer controls this automatically—dealing the first half of the hand face-up and the remaining half face-down rather than letting players choose which cards to show.",
+        dna: {
+          holeCards: 4,
+          grouping: "single",
+          exposure: "half-up",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "omaha-exact-2"
+        }
+      },
+      {
+        id: "dragon-fruit",
+        name: "Dragon Fruit",
+        origin: "core",
+        quickDeal: "4 hole cards",
+        quickBoard: "5 final community cards via street purges",
+        quickMechanic: "Flop: 4 cards, SB purges 1. Turn: +2 cards, BB purges 1. River: +2 cards, UTG purges 1. Use any 4 hole + any 5 board cards for best 5-card hand.",
+        fullRules: "Every player starts with four hole cards, and the community board finishes with five cards after street purges. At showdown, players may use any of their four hole cards and any of the five community cards to make their best five-card hand.\n• Flop: Four cards are dealt, and the small blind purges (discards) one card from the flop.\n• Turn: Two cards are dealt, and the big blind purges one card.\n• River: Two cards are dealt, and the player under the gun purges one card.",
+        dna: {
+          holeCards: 4,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: true,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "any-hole"
+        }
+      },
+      {
+        id: "grapes",
+        name: "Grapes",
+        origin: "core",
+        quickDeal: "6 hole cards arranged as three 2-card Hold'em hands",
+        quickBoard: "Standard community board",
+        quickMechanic: "Play hands at discretion; discard one 2-card hand after flop and one after turn, playing remaining hand on river.",
+        fullRules: "Players are dealt six hole cards and organize them into three separate two-card Hold'em hands, which they may play at their discretion across a standard community board. After the flop, each player discards one two-card hand, and after the turn, each player discards a second two-card hand, keeping their single remaining hand for the river.",
+        dna: {
+          holeCards: 6,
+          grouping: "pairs",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "1-pair", turn: "1-pair", river: "none" },
+          showdown: "holdem"
+        }
+      },
+      {
+        id: "grapefruit",
+        name: "Grapefruit",
+        origin: "core",
+        quickDeal: "6 hole cards split into two 3-card hands",
+        quickBoard: "Standard community board",
+        quickMechanic: "Discard one 3-card hand on the turn; on river, use any of your 3 cards plus any number of community cards.",
+        fullRules: "Players start with six hole cards split into two three-card hands. On the turn, each player discards one entire three-card hand. When the river is reached, a player may use any of their three remaining cards plus however many community cards they choose to use to build their best five-card hand.",
+        dna: {
+          holeCards: 6,
+          grouping: "triples",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "1-triple", river: "none" },
+          showdown: "any-hole"
+        }
+      },
+      {
+        id: "irish-poker",
+        name: "Irish Poker",
+        origin: "core",
+        quickDeal: "3 hole cards",
+        quickBoard: "Standard community board",
+        quickMechanic: "Discard 1 card after the flop, then play the remainder of the hand as regular Hold'em.",
+        fullRules: "Each player starts with three hole cards. After the flop, each player discards one card (leaving two hole cards) and plays the remainder of the hand like regular Hold'em across the community board.",
+        dna: {
+          holeCards: 3,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "1-card", turn: "none", river: "none" },
+          showdown: "holdem"
+        }
+      },
+      {
+        id: "strawberry",
+        name: "Strawberry",
+        origin: "core",
+        quickDeal: "4 hole cards (Omaha hand)",
+        quickBoard: "Omaha board + variable River Ocean",
+        quickMechanic: "River card sets Ocean card count (A=1, J=11, Q=12, K=13; e.g., 6 deals a 6-card ocean).",
+        fullRules: "Played as an Omaha hand with four hole cards (must use two hole cards and three board cards). When the river card is revealed, its rank determines how many extra community cards are dealt for an 'Ocean': Aces count as 1, 2–10 count as face value, Jacks as 11, Queens as 12, and Kings as 13 (for example, a six on the river results in a six-card ocean).",
+        dna: {
+          holeCards: 4,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "ocean",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "omaha-exact-2"
+        }
+      },
+      {
+        id: "blackjack-poker",
+        name: "Blackjack Poker",
+        origin: "core",
+        quickDeal: "2 hole cards face down",
+        quickBoard: "3-street board + multi-card Blackjack River",
+        quickMechanic: "Pre-flop hit/stand up to 21 (bust = post big blind & fold). River draws until >=17 (A=hard 11 unless bust, then 1; face=10); bust discards river; 21 adds all discarded cards to board.",
+        fullRules: "Everyone is dealt two hole cards face down like a Hold'em hand. Face cards count as 10, and Aces count as 1 or 11.\n• Pre-Flop Hit or Stand: Starting with the small blind, players with hidden hands may choose to 'hit' to receive an extra face-down hole card. Going over 21 busts the player, requiring them to post the big blind and fold. Players may stand at any time and play their hand through the rest of the hand (hitting only occurs pre-flop, and players may use their hole cards as they choose according to the board at showdown, even with more than two hole cards under 21).\n• Flop & Turn: Dealt normally as standard streets.\n• Blackjack River: Rather than a single river card, the river builds a blackjack total. Cards are dealt one by one; if the river total is under 17, the board must hit and draw another card (Aces on the board count as a hard 11 unless that would bust, in which case the Ace counts as 1). If the river busts over 21, all river cards are thrown into the fold pile. If it does not bust, all river cards remain on the board. If an exact blackjack (21) is dealt—such as a seven followed by an Ace—dealing stops immediately and every single card in the discard pile is placed onto the board.",
+        dna: {
+          holeCards: 2,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "blackjack-hit",
+          boardType: "standard",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "blackjack-river",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "any-hole"
+        }
+      },
+      {
+        id: "tic-tac-toe-poker",
+        name: "Tic-Tac-Toe Poker",
+        origin: "core",
+        quickDeal: "2 hole cards",
+        quickBoard: "3x3 grid (3 flop, 3 turn below flop, 3 river)",
+        quickMechanic: "Select one straight line of 3 cards (row, column, or diagonal) plus your 2 hole cards for a 5-card hand.",
+        fullRules: "Each player is dealt two hole cards. The flop deals three cards (top row), the turn deals three cards directly below the flop cards (middle row), and the river deals three more cards (bottom row) to form a 3x3 grid. After the river is dealt, a player selects one straight line of three cards on the grid—horizontally, vertically, or diagonally—together with their two hole cards to make a five-card hand.",
+        dna: {
+          holeCards: 2,
+          grouping: "single",
+          exposure: "all-down",
+          preflopAction: "none",
+          boardType: "grid-3x3",
+          streetPurge: false,
+          graveyard: false,
+          riverMod: "none",
+          discards: { flop: "none", turn: "none", river: "none" },
+          showdown: "grid-line-3"
+        }
+      }
+    ];
+
+    /* ==========================================================================
+       2. STATE MANAGEMENT & STORAGE
+       ========================================================================== */
+    const STORAGE_KEY = "poker_variant_mixer_library_v1";
+    let variants = [];
+    let currentFilter = "all";
+    let mixerSelection = [];
+    let latestSynthesis = null;
+
+    async function initApp() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          variants = JSON.parse(saved);
+        } catch (e) {
+          variants = structuredClone(CORE_VARIANTS);
+        }
+      } else {
+        variants = structuredClone(CORE_VARIANTS);
+      }
+
+      try {
+        const res = await fetch("./variants.json", { cache: "no-store" });
+        if (res.ok) {
+          const remoteList = await res.json();
+          if (Array.isArray(remoteList)) {
+            const existingIds = new Set(variants.map(v => v.id));
+            let added = 0;
+            remoteList.forEach(item => {
+              if (item && item.id && !existingIds.has(item.id)) {
+                variants.push(item);
+                added++;
+              }
+            });
+            if (added > 0) saveVariants();
+          }
+        }
+      } catch (_) {}
+
+      updateCounts();
+      renderLibrary();
+      renderMixerUI();
+      renderMasterTable();
+    }
+
+    function saveVariants() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(variants));
+      updateCounts();
+      renderLibrary();
+      renderMixerUI();
+      renderMasterTable();
+    }
+
+    function updateCounts() {
+      document.getElementById("libraryCount").textContent = variants.length;
+      document.getElementById("mixerSlotBadge").textContent = `${mixerSelection.length}/3`;
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 3200);
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll(".nav-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabName);
+      });
+      document.querySelectorAll(".section-view").forEach(sec => {
+        sec.classList.toggle("active", sec.id === `view-${tabName}`);
+      });
+    }
+
+    /* ==========================================================================
+       3. LIBRARY RENDERING & DETAIL MODAL
+       ========================================================================== */
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll("#filterPills .pill").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      renderLibrary();
+    }
+
+    function renderLibrary() {
+      const grid = document.getElementById("variantsGrid");
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+
+      const filtered = variants.filter(v => {
+        const matchesFilter = currentFilter === "all" || v.origin === currentFilter;
+        const haystack = `${v.name} ${v.quickDeal} ${v.quickBoard} ${v.quickMechanic} ${v.fullRules}`.toLowerCase();
+        return matchesFilter && haystack.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted); background:var(--bg-surface); border-radius:var(--radius); border:1px solid var(--border);">No poker variants match your filter.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(v => {
+        const isSelected = mixerSelection.includes(v.id);
+        const badgeClass = v.origin === "core" ? "tag-core" : v.origin === "hybrid" ? "tag-hybrid" : "tag-custom";
+        const badgeLabel = v.origin === "core" ? "Core Rulebook" : v.origin === "hybrid" ? "Mixed Hybrid" : "Custom Variant";
+
+        return `
+          <div class="variant-card ${isSelected ? "selected-for-mix" : ""}">
+            <div>
+              <div class="card-top">
+                <h3 class="card-title">${escapeHtml(v.name)}</h3>
+                <span class="tag-badge ${badgeClass}">${badgeLabel}</span>
+              </div>
+
+              <div class="spec-list">
+                <div class="spec-item">
+                  <span class="spec-label">Starting Deal</span>
+                  ${escapeHtml(v.quickDeal)}
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Board Structure</span>
+                  ${escapeHtml(v.quickBoard)}
+                </div>
+              </div>
+
+              <p class="card-summary">${escapeHtml(v.quickMechanic)}</p>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn btn-sm" onclick="openDetailModal('${v.id}')">Full Rules</button>
+              <button class="btn btn-sm ${isSelected ? "btn-primary" : ""}" onclick="toggleMixerVariant('${v.id}')">
+                ${isSelected ? "&#10003; In Mixer" : "+ Mix Game"}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function openDetailModal(id) {
+      const v = variants.find(item => item.id === id);
+      if (!v) return;
+
+      document.getElementById("detailTitle").textContent = v.name;
+      const badge = document.getElementById("detailBadge");
+      badge.className = `tag-badge ${v.origin === "core" ? "tag-core" : v.origin === "hybrid" ? "tag-hybrid" : "tag-custom"}`;
+      badge.textContent = v.origin === "core" ? "Core Rulebook Variant" : v.origin === "hybrid" ? "Synthesized Hybrid Variant" : "Custom Variant";
+
+      const formattedRules = escapeHtml(v.fullRules).replace(/\n/g, "<br>");
+      const deleteBtn = v.origin !== "core"
+        ? `<button class="btn btn-danger btn-sm" onclick="deleteVariant('${v.id}')">Delete Variant</button>`
+        : "";
+
+      document.getElementById("detailBody").innerHTML = `
+        <div class="spec-list" style="margin-bottom:1.25rem;">
+          <div class="spec-item"><span class="spec-label">Starting Deal</span>${escapeHtml(v.quickDeal)}</div>
+          <div class="spec-item"><span class="spec-label">Board Structure</span>${escapeHtml(v.quickBoard)}</div>
+          <div class="spec-item"><span class="spec-label">Core Mechanic &amp; Showdown</span>${escapeHtml(v.quickMechanic)}</div>
+        </div>
+        <h4 style="color:var(--emerald); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.5rem;">Complete Ruleset Explanation</h4>
+        <div style="background:var(--bg-base); border:1px solid var(--border); padding:1.1rem; border-radius:8px; font-size:0.94rem; line-height:1.68; margin-bottom:1.25rem;">
+          ${formattedRules}
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          ${deleteBtn}
+          <button class="btn btn-primary" onclick="closeModal('detailModal'); toggleMixerVariant('${v.id}', true); switchTab('mixer');">
+            Load into Variant Mixer &rarr;
+          </button>
+        </div>
+      `;
+
+      document.getElementById("detailModal").classList.add("open");
+    }
+
+    function deleteVariant(id) {
+      variants = variants.filter(v => v.id !== id);
+      mixerSelection = mixerSelection.filter(mid => mid !== id);
+      saveVariants();
+      closeModal("detailModal");
+      showToast("Variant removed from library.");
+    }
+
+    /* ==========================================================================
+       4. MIXER SELECTION & RULE SYNTHESIS ENGINE
+       ========================================================================== */
+    function toggleMixerVariant(id, forceAdd = false) {
+      const idx = mixerSelection.indexOf(id);
+      if (idx > -1) {
+        if (!forceAdd) mixerSelection.splice(idx, 1);
+      } else {
+        if (mixerSelection.length >= 3) {
+          showToast("Mixer holds up to 3 variants. Remove one first.");
+          return;
+        }
+        mixerSelection.push(id);
+      }
+      updateCounts();
+      renderLibrary();
+      renderMixerUI();
+    }
+
+    function clearMixer() {
+      mixerSelection = [];
+      latestSynthesis = null;
+      document.getElementById("synthesisOutputContainer").innerHTML = "";
+      updateCounts();
+      renderLibrary();
+      renderMixerUI();
+    }
+
+    function randomizeMix() {
+      const pool = [...variants];
+      pool.sort(() => Math.random() - 0.5);
+      mixerSelection = [pool[0].id, pool[1].id];
+      updateCounts();
+      renderLibrary();
+      renderMixerUI();
+      runSynthesis();
+    }
+
+    function renderMixerUI() {
+      const slotsEl = document.getElementById("mixerSlotsContainer");
+      const chipsEl = document.getElementById("pickerChips");
+
+      const slotConfigs = [
+        { label: "Base Variant 1 (Required)", optional: false },
+        { label: "Variant 2 to Combine (Required)", optional: false },
+        { label: "Variant 3 Modifier (Optional)", optional: true }
+      ];
+
+      slotsEl.innerHTML = slotConfigs.map((cfg, i) => {
+        const varId = mixerSelection[i];
+        const v = variants.find(item => item.id === varId);
+        const plusHtml = i < 2 ? `<div class="slot-plus">+</div>` : "";
+
+        if (v) {
+          return `
+            <div class="mix-slot filled">
+              <div class="slot-header">
+                <span class="slot-label">${cfg.label}</span>
+                <button class="btn btn-sm btn-danger" style="padding:0.2rem 0.5rem; font-size:0.74rem;" onclick="toggleMixerVariant('${v.id}')">Remove</button>
+              </div>
+              <strong style="font-size:1.1rem; color:var(--text-main);">${escapeHtml(v.name)}</strong>
+              <span style="font-size:0.82rem; color:var(--text-muted); margin-top:0.25rem;">${escapeHtml(v.quickDeal)} &bull; ${escapeHtml(v.quickBoard)}</span>
+            </div>
+            ${plusHtml}
+          `;
+        }
+
+        return `
+          <div class="mix-slot ${cfg.optional ? "optional-slot" : ""}">
+            <span class="slot-label">${cfg.label}</span>
+            <span style="color:var(--text-dim); font-size:0.9rem; margin-top:0.35rem;">Click any variant pill below to slot it in</span>
+          </div>
+          ${plusHtml}
+        `;
+      }).join("");
+
+      chipsEl.innerHTML = variants.map(v => {
+        const active = mixerSelection.includes(v.id);
+        return `
+          <button class="picker-chip ${active ? "in-slot" : ""}" onclick="toggleMixerVariant('${v.id}')">
+            ${active ? "&#10003; " : "+ "}${escapeHtml(v.name)}
+          </button>
+        `;
+      }).join("");
+    }
+
+    function generateHybridName(selected) {
+      const names = selected.map(v => v.name.replace(/\s+Poker$/i, "").trim());
+      if (names.length === 2) {
+        if (names[0] === "Texas Hold'em") return `${names[1]} Hold'em`;
+        if (names[1] === "Texas Hold'em") return `${names[0]} Hold'em`;
+        return `${names[0]} ${names[1]}`;
+      }
+      return `${names[0]}-${names[1]} ${names[2]}`;
+    }
+
+    function runSynthesis() {
+      if (mixerSelection.length < 2) {
+        showToast("Select at least 2 variants to analyze and combine.");
+        return;
+      }
+
+      const selected = mixerSelection.map(id => variants.find(v => v.id === id)).filter(Boolean);
+      const dnas = selected.map(v => v.dna);
+      const resolutions = [];
+
+      // 1. ANALYZE STARTING DEAL & HOLE CARDS
+      const hasTriples = dnas.some(d => d.grouping === "triples");
+      const hasPairs = dnas.some(d => d.grouping === "pairs");
+      const hasHalfUp = dnas.some(d => d.exposure === "half-up");
+      const hasBlackjackHit = dnas.some(d => d.preflopAction === "blackjack-hit");
+
+      let finalHoleCount = Math.max(...dnas.map(d => d.holeCards));
+      let groupingMode = "single";
+
+      if (hasTriples && hasPairs) {
+        groupingMode = "triples";
+        finalHoleCount = 6;
+        resolutions.push("Hand Grouping Harmonized: Combined 6-card split structures into two 3-card hands (Grapefruit priority) so sub-hands maintain post-flop playability.");
+      } else if (hasTriples) {
+        groupingMode = "triples";
+        finalHoleCount = 6;
+        if (dnas.some(d => d.holeCards !== 6)) {
+          resolutions.push("Hole Card Count Expanded: Upgraded starting deal to 6 hole cards split into two 3-card hands to preserve sub-hand elimination.");
+        }
+      } else if (hasPairs) {
+        groupingMode = "pairs";
+        finalHoleCount = 6;
+        if (dnas.some(d => d.holeCards !== 6)) {
+          resolutions.push("Hole Card Count Expanded: Upgraded starting deal to 6 hole cards arranged as three 2-card Hold'em hands.");
+        }
+      }
+
+      let dealDescription = "";
+      let preflopText = "";
+
+      if (groupingMode === "pairs") {
+        dealDescription = "6 hole cards arranged into three 2-card Hold'em hands";
+        preflopText = "Each player is dealt six hole cards and arranges them into three separate two-card hands.";
+      } else if (groupingMode === "triples") {
+        dealDescription = "6 hole cards split into two 3-card hands";
+        preflopText = "Each player is dealt six hole cards and organizes them into two separate three-card hands.";
+      } else {
+        dealDescription = `${finalHoleCount} hole cards`;
+        preflopText = `Each player is dealt ${finalHoleCount} hole cards.`;
+      }
+
+      if (hasHalfUp) {
+        const faceUpCount = Math.floor(finalHoleCount / 2);
+        const faceDownCount = finalHoleCount - faceUpCount;
+        dealDescription += ` (${faceUpCount} face-up / ${faceDownCount} face-down)`;
+        if (groupingMode === "pairs") {
+          preflopText += ` Per Fuji Poker rules, the dealer automatically deals 1 card face-up and 1 card face-down in each of the three 2-card hands; exposed cards remain visible throughout the entire hand.`;
+        } else if (groupingMode === "triples") {
+          preflopText += ` Per Fuji Poker rules, half of the deal (3 cards) is dealt face-up and 3 face-down automatically by the dealer, remaining exposed all hand.`;
+        } else {
+          preflopText += ` Per Fuji Poker rules, the dealer automatically deals the first ${faceUpCount} card(s) face-up and the remaining ${faceDownCount} face-down (players do not choose which cards are exposed).`;
+        }
+        if (finalHoleCount % 2 !== 0) {
+          resolutions.push(`Odd-Card Fuji Split Resolved: With ${finalHoleCount} starting cards, ${faceUpCount} are dealt face-up and ${faceDownCount} face-down.`);
+        }
+      }
+
+      if (hasBlackjackHit) {
+        dealDescription += " + Pre-Flop Hit/Stand (up to 21)";
+        preflopText += ` Pre-Flop Blackjack Action: Starting with the Small Blind, players may 'Hit' to receive extra face-down hole cards (Face cards = 10, Aces = 1 or 11). Exceeding 21 busts the player immediately, forcing them to post the big blind and fold. Players may 'Stand' at any time.`;
+        if (finalHoleCount > 2) {
+          resolutions.push(`Multi-Card Blackjack Threshold: Because players start with ${finalHoleCount} cards, any player dealt over 21 naturally on the initial deal may immediately discard down to 2 hole cards before deciding to Hit or Stand.`);
+        }
+      }
+
+      // 2. ANALYZE STREET DISCARDS
+      const hasWatermelon = dnas.some(d => d.discards.river === "1-card");
+      const hasIrish = dnas.some(d => d.discards.flop === "1-card" && d.discards.river === "none");
+      let discardNarrative = "";
+
+      if (groupingMode === "pairs") {
+        discardNarrative = "After the Flop, each player discards one complete 2-card hand (2 hands left). After the Turn, each player discards a second 2-card hand, keeping one 2-card hand for the River.";
+        if (hasWatermelon || hasIrish) {
+          resolutions.push("Discard Overlap Resolved: Sub-hand elimination (discarding a full 2-card hand on Flop and Turn) supersedes single-card street discards.");
+        }
+      } else if (groupingMode === "triples") {
+        discardNarrative = "On the Turn, each player discards one complete 3-card hand, carrying their remaining 3-card hand into the River.";
+        if (hasWatermelon) {
+          discardNarrative += " Additionally, before River betting begins, each player discards 1 single card from their remaining hand (leaving 2 hole cards).";
+          resolutions.push("Grapefruit + Watermelon Merged: Players discard one 3-card hand on the Turn and 1 single card on the River to finish with 2 hole cards.");
+        }
+      } else if (hasWatermelon) {
+        if (finalHoleCount === 5) {
+          discardNarrative = "Progressive Street Discards: Before betting begins on each post-flop street, each player discards 1 hole card—leaving 4 cards after the Flop, 3 cards after the Turn, and 2 cards after the River.";
+        } else {
+          discardNarrative = `Progressive Street Discards: Players discard 1 hole card after the Flop, 1 after the Turn, and 1 after the River before betting begins on each street.`;
+        }
+        if (hasIrish) {
+          resolutions.push("Duplicate Flop Discard Prevented: Watermelon's 1-card-per-street discard schedule absorbs Irish Poker's flop discard so players do not discard twice on the flop.");
+        }
+      } else if (hasIrish) {
+        discardNarrative = `Flop Discard: After the Flop is dealt, each player discards 1 hole card (leaving ${finalHoleCount - 1} hole cards) before playing the Turn and River.`;
+      }
+
+      // 3. ANALYZE BOARD STRUCTURE, PURGES, GRAVEYARD & RIVER MODIFIERS
+      const isGrid = dnas.some(d => d.boardType === "grid-3x3");
+      const hasPurge = dnas.some(d => d.streetPurge);
+      const hasGraveyard = dnas.some(d => d.graveyard);
+      const hasOcean = dnas.some(d => d.riverMod === "ocean");
+      const hasBlackjackRiver = dnas.some(d => d.riverMod === "blackjack-river");
+
+      let boardQuick = "";
+      let flopText = "";
+      let turnText = "";
+      let riverText = "";
+
+      if (isGrid) {
+        boardQuick = hasPurge
+          ? "3x3 Grid formed via positional street purges"
+          : "3x3 Community Grid (3 Flop, 3 Turn, 3 River)";
+
+        if (hasPurge) {
+          flopText = "Top Row (Flop): Dealer deals 4 cards; the Small Blind purges 1 card, leaving 3 cards as Row 1 of the 3x3 grid.";
+          turnText = "Middle Row (Turn): Dealer deals 4 cards below Row 1; the Big Blind purges 1 card, leaving 3 cards as Row 2.";
+          riverText = "Bottom Row (River): Dealer deals 4 cards below Row 2; Under the Gun purges 1 card, leaving 3 cards as Row 3.";
+          resolutions.push("Grid + Street Purge Synchronized: Each grid row deals 4 cards and purges 1 (SB/BB/UTG) so every row locks cleanly at 3 cards for a true 3x3 grid.");
+        } else {
+          flopText = "Top Row (Flop): Three community cards are dealt horizontally to form the top row of the 3x3 grid.";
+          turnText = "Middle Row (Turn): Three community cards are dealt directly below the flop to form the middle row.";
+          riverText = "Bottom Row (River): Three community cards are dealt below the turn to complete the 3x3 grid.";
+        }
+
+        if (hasBlackjackRiver) {
+          boardQuick += " + Blackjack Row 3";
+          riverText = "Bottom Row (Blackjack River): Instead of dealing 3 flat cards, cards are dealt one by one into Row 3 until the row's Blackjack total reaches 17 or higher (Aces = 11 or 1, Face = 10). If Row 3 busts (>21), all Row 3 cards are discarded (players may only use horizontal Row 1, Row 2, or a wild-card gap). If an exact 21 is hit, all discarded/folded cards join a playable side pool!";
+          resolutions.push("Grid + Blackjack River Harmonized: Row 3 acts as the Blackjack street; hitting 21 unlocks the discard pile as wild grid substitutes.");
+        } else if (hasOcean) {
+          boardQuick += " + Variable Ocean";
+          riverText += " Then, the center card of the bottom River row sets an 'Ocean' count (A=1, J=11, Q=12, K=13); players may substitute up to 1 Ocean card into their chosen 3-card grid line.";
+          resolutions.push("Grid + Ocean Harmonized: The center River card triggers the Ocean deal, allowing 1 Ocean card to bridge any 3-card line on the grid.");
+        }
+      } else {
+        boardQuick = hasPurge
+          ? "5 final community cards via street purges"
+          : "5-card community board (Flop, Turn, River)";
+
+        if (hasPurge) {
+          flopText = "Flop: 4 cards are dealt face-up, and the Small Blind purges (discards) 1 card, leaving 3 flop cards.";
+          turnText = "Turn: 2 cards are dealt face-up, and the Big Blind purges 1 card, leaving 4 total board cards.";
+          riverText = "River: 2 cards are dealt face-up, and Under the Gun purges 1 card, leaving 5 final community cards.";
+        } else {
+          flopText = "Flop: Three community cards are dealt face-up.";
+          turnText = "Turn: One community card is dealt face-up.";
+          riverText = "River: One final community card is dealt face-up.";
+        }
+
+        if (hasBlackjackRiver && hasOcean) {
+          boardQuick += " + Blackjack River & Ocean";
+          riverText = "Blackjack Ocean River: Cards are dealt one by one to build a Blackjack total until >=17 (A=11 or 1, Face=10). If it busts (>21), all river cards go to the fold pile. If it stands (17–20) or hits exact 21 (dumping the entire discard pile onto the board), the final card dealt sets the Ocean card count (A=1, J=11, Q=12, K=13)!";
+          resolutions.push("Dual River Engine Merged: Blackjack River resolves first (17–21 stand/dump), and the final standing River card's rank triggers the Strawberry Ocean.");
+        } else if (hasBlackjackRiver) {
+          boardQuick += " + Blackjack River";
+          riverText = "Blackjack River: Cards are dealt one by one until the river total reaches >=17 (Aces count as hard 11 unless busting, then 1; face cards = 10). Busting (>21) throws all river cards into the fold pile. Standing (17–20) keeps all river cards on the board. Hitting an exact 21 stops dealing immediately and places every single card in the discard/fold pile onto the board!";
+        } else if (hasOcean) {
+          boardQuick += " + Variable Ocean";
+          riverText += " Immediately upon revealing the River card, its rank determines how many extra community cards are dealt for an 'Ocean' (A=1, 2–10=face value, J=11, Q=12, K=13).";
+        }
+      }
+
+      if (hasGraveyard) {
+        boardQuick += " + Graveyard Folded Cards";
+        const graveNote = " Graveyard Rule Active: Whenever any player folds during any street, their folded cards are immediately placed face-up onto the community board as live playable cards. Folding out of turn is strictly forbidden.";
+        flopText += graveNote;
+        if (hasBlackjackRiver) {
+          resolutions.push("Graveyard + Blackjack Synergy: Folded cards go live onto the board immediately, while purged/busted river cards feed the Blackjack 21 discard pile.");
+        }
+      }
+
+      if (discardNarrative) {
+        flopText += ` ${discardNarrative}`;
+      }
+
+      // 4. ANALYZE SHOWDOWN & HAND CONSTRUCTION
+      const hasOmaha = dnas.some(d => d.showdown === "omaha-exact-2");
+      const hasAnyHole = dnas.some(d => d.showdown === "any-hole");
+      let showdownText = "";
+      let coreMechanicQuick = "";
+
+      if (isGrid) {
+        if (hasOmaha) {
+          showdownText = "At showdown, each player must select one straight line of 3 cards on the 3x3 grid (horizontal row, vertical column, or diagonal) and combine it with exactly 2 of their hole cards to build their best 5-card poker hand.";
+          coreMechanicQuick = "Select 1 straight line of 3 grid cards + exact 2 hole cards for a 5-card hand.";
+          resolutions.push("Tic-Tac-Toe + Omaha Aligned: Both formats naturally require 2 hole cards + 3 board cards (via a 3-card grid line).");
+        } else if (hasAnyHole) {
+          showdownText = "At showdown, each player selects one straight line of 3 cards on the 3x3 grid (row, column, or diagonal), and may use any combination of their surviving hole cards and those 3 line cards to construct their best 5-card hand.";
+          coreMechanicQuick = "Select 1 straight line of 3 grid cards + any hole cards for a 5-card hand.";
+        } else {
+          showdownText = "At showdown, each player selects one straight line of 3 cards on the 3x3 grid (horizontally, vertically, or diagonally) together with 2 hole cards to form their best 5-card hand.";
+          coreMechanicQuick = "Select 1 straight line of 3 grid cards + 2 hole cards for a 5-card hand.";
+        }
+      } else if (hasOmaha && hasAnyHole) {
+        showdownText = "Hybrid Showdown Rule: Players must use at least 2 of their surviving hole cards (or up to any number of hole cards if fewer than 2 remain) combined with the community board to build their best 5-card hand.";
+        coreMechanicQuick = "Hybrid Omaha/Any-Card showdown (must use 2+ hole cards) across all active board/ocean/graveyard cards.";
+        resolutions.push("Omaha vs. Flexible Showdown Resolved: Enforced a 'Minimum 2 Hole Cards' rule so multi-card starting hands retain Omaha structure while allowing flexible River/Ocean combos.");
+      } else if (hasOmaha) {
+        showdownText = "Omaha Showdown Rule: Every player must use exactly 2 of their surviving hole cards and exactly 3 community cards (including any Ocean, Graveyard, or Blackjack River cards) to make their best 5-card hand.";
+        coreMechanicQuick = "Must use exact 2 hole cards + 3 community board cards at showdown.";
+      } else if (hasAnyHole) {
+        showdownText = "Flexible Showdown Rule: Players may use any combination of their surviving hole cards (from 0 up to all hole cards) and any of the active community cards to construct their best 5-card poker hand.";
+        coreMechanicQuick = "Use any number of surviving hole cards + any board cards for best 5-card hand.";
+      } else {
+        showdownText = "Standard Hold'em Showdown: Players construct their best 5-card poker hand using any combination of their surviving hole cards and the active community board.";
+        coreMechanicQuick = "Standard Hold'em hand construction across all active community cards.";
+      }
+
+      if (resolutions.length === 0) {
+        resolutions.push("Clean Structural Merge: The selected variants operate on distinct phases of the hand (Deal vs. Board/River) and combine with zero rule collisions.");
+      }
+
+      const hybridName = generateHybridName(selected);
+      const sourceNames = selected.map(v => v.name).join(" + ");
+
+      const fullRulesCompiled =
+        `Hybrid Blend: ${sourceNames}\n\n` +
+        `• Pre-Flop & Starting Deal: ${preflopText}\n` +
+        `• Flop: ${flopText}\n` +
+        `• Turn: ${turnText}\n` +
+        `• River: ${riverText}\n` +
+        `• Showdown: ${showdownText}`;
+
+      const mergedDna = {
+        holeCards: finalHoleCount,
+        grouping: groupingMode,
+        exposure: hasHalfUp ? "half-up" : "all-down",
+        preflopAction: hasBlackjackHit ? "blackjack-hit" : "none",
+        boardType: isGrid ? "grid-3x3" : "standard",
+        streetPurge: hasPurge,
+        graveyard: hasGraveyard,
+        riverMod: hasBlackjackRiver ? "blackjack-river" : hasOcean ? "ocean" : "none",
+        discards: {
+          flop: groupingMode === "pairs" ? "1-pair" : (hasWatermelon || hasIrish) ? "1-card" : "none",
+          turn: groupingMode === "triples" ? "1-triple" : groupingMode === "pairs" ? "1-pair" : hasWatermelon ? "1-card" : "none",
+          river: hasWatermelon ? "1-card" : "none"
+        },
+        showdown: isGrid ? "grid-line-3" : hasOmaha ? "omaha-exact-2" : hasAnyHole ? "any-hole" : "holdem"
+      };
+
+      latestSynthesis = {
+        name: hybridName,
+        sourceNames,
+        quickDeal: dealDescription,
+        quickBoard: boardQuick,
+        quickMechanic: coreMechanicQuick,
+        preflopText,
+        flopText,
+        turnText,
+        riverText,
+        showdownText,
+        resolutions,
+        fullRules: fullRulesCompiled,
+        dna: mergedDna
+      };
+
+      renderSynthesisOutput();
+    }
+
+    function renderSynthesisOutput() {
+      if (!latestSynthesis) return;
+      const s = latestSynthesis;
+      const container = document.getElementById("synthesisOutputContainer");
+
+      container.innerHTML = `
+        <div class="rulebook-output">
+          <div class="rulebook-header">
+            <div style="flex:1; min-width:260px;">
+              <span class="tag-badge tag-hybrid" style="margin-bottom:0.5rem; display:inline-block;">
+                Synthesized Hybrid &bull; ${escapeHtml(s.sourceNames)}
+              </span>
+              <input type="text" id="hybridNameInput" class="editable-title-input" value="${escapeHtml(s.name)}" oninput="latestSynthesis.name = this.value" />
+            </div>
+            <div class="no-print" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+              <button class="btn btn-primary" onclick="saveHybridToLibrary()">+ Save to Library</button>
+              <button class="btn" onclick="copySynthesizedRules()">Copy Rules</button>
+              <button class="btn" onclick="window.print()">Print Sheet</button>
+            </div>
+          </div>
+
+          <table class="qr-table">
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Starting Deal</th>
+                <th>Board Structure</th>
+                <th>Core Mechanic &amp; Showdown</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>${escapeHtml(s.name)}</strong></td>
+                <td>${escapeHtml(s.quickDeal)}</td>
+                <td>${escapeHtml(s.quickBoard)}</td>
+                <td>${escapeHtml(s.quickMechanic)}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="harmony-box">
+            <h4>&#9881; Rule Engine Analysis &amp; Conflict Resolutions</h4>
+            <ul>
+              ${s.resolutions.map(r => `<li>${escapeHtml(r)}</li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="street-blocks">
+            <div class="street-card">
+              <h4>1. Starting Deal &amp; Pre-Flop</h4>
+              <p>${escapeHtml(s.preflopText)}</p>
+            </div>
+            <div class="street-card">
+              <h4>2. The Flop</h4>
+              <p>${escapeHtml(s.flopText)}</p>
+            </div>
+            <div class="street-card">
+              <h4>3. The Turn</h4>
+              <p>${escapeHtml(s.turnText)}</p>
+            </div>
+            <div class="street-card">
+              <h4>4. The River</h4>
+              <p>${escapeHtml(s.riverText)}</p>
+            </div>
+            <div class="street-card" style="grid-column: 1 / -1; border-color: rgba(16,185,129,0.4);">
+              <h4>5. Showdown &amp; Hand Construction</h4>
+              <p>${escapeHtml(s.showdownText)}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function saveHybridToLibrary() {
+      if (!latestSynthesis) return;
+      const cleanName = (document.getElementById("hybridNameInput")?.value || latestSynthesis.name).trim() || "Custom Hybrid";
+      const slug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now().toString().slice(-4);
+
+      const newEntry = {
+        id: slug,
+        name: cleanName,
+        origin: "hybrid",
+        quickDeal: latestSynthesis.quickDeal,
+        quickBoard: latestSynthesis.quickBoard,
+        quickMechanic: latestSynthesis.quickMechanic,
+        fullRules: latestSynthesis.fullRules,
+        dna: latestSynthesis.dna
+      };
+
+      variants.unshift(newEntry);
+      saveVariants();
+      showToast(`"${cleanName}" saved to Variant Library!`);
+    }
+
+    function copySynthesizedRules() {
+      if (!latestSynthesis) return;
+      const text = `${latestSynthesis.name.toUpperCase()} (${latestSynthesis.sourceNames})\n` +
+        `Starting Deal: ${latestSynthesis.quickDeal}\n` +
+        `Board Structure: ${latestSynthesis.quickBoard}\n` +
+        `Core Mechanic: ${latestSynthesis.quickMechanic}\n\n` +
+        `${latestSynthesis.fullRules}`;
+      navigator.clipboard.writeText(text).then(() => showToast("Full ruleset copied to clipboard!"));
+    }
+
+    /* ==========================================================================
+       5. ADD NEW CUSTOM VARIANT
+       ========================================================================== */
+    function openAddModal() {
+      document.getElementById("addVariantForm").reset();
+      document.getElementById("addModal").classList.add("open");
+    }
+
+    function handleCreateVariant(e) {
+      e.preventDefault();
+      const name = document.getElementById("newVarName").value.trim();
+      const holeCards = parseInt(document.getElementById("newHoleCards").value, 10);
+      const dealStyle = document.getElementById("newDealStyle").value;
+      const boardStyle = document.getElementById("newBoardStyle").value;
+      const discardRule = document.getElementById("newDiscardRule").value;
+      const showdownRule = document.getElementById("newShowdownRule").value;
+      const quickSummary = document.getElementById("newQuickSummary").value.trim();
+      const fullRules = document.getElementById("newFullRules").value.trim();
+
+      const dealLabels = {
+        "single-down": `${holeCards} hole cards`,
+        "half-up": `${holeCards} hole cards (half face-up / half down)`,
+        "pairs": "6 hole cards split into three 2-card hands",
+        "triples": "6 hole cards split into two 3-card hands"
+      };
+
+      const boardLabels = {
+        "standard": "5-card community board (flop, turn, river)",
+        "grid-3x3": "3x3 community grid (9 cards)",
+        "street-purge": "5 community cards via street purges",
+        "ocean": "5-card board + variable River Ocean",
+        "graveyard": "5-card board + folded Graveyard cards"
+      };
+
+      const newVariant = {
+        id: name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now().toString().slice(-4),
+        name,
+        origin: "custom",
+        quickDeal: dealLabels[dealStyle] || `${holeCards} hole cards`,
+        quickBoard: boardLabels[boardStyle] || "Standard community board",
+        quickMechanic: quickSummary,
+        fullRules,
+        dna: {
+          holeCards: dealStyle === "pairs" || dealStyle === "triples" ? 6 : holeCards,
+          grouping: dealStyle === "pairs" ? "pairs" : dealStyle === "triples" ? "triples" : "single",
+          exposure: dealStyle === "half-up" ? "half-up" : "all-down",
+          preflopAction: "none",
+          boardType: boardStyle === "grid-3x3" ? "grid-3x3" : "standard",
+          streetPurge: boardStyle === "street-purge",
+          graveyard: boardStyle === "graveyard",
+          riverMod: boardStyle === "ocean" ? "ocean" : "none",
+          discards: {
+            flop: discardRule === "flop-1" || discardRule === "progressive-1" ? "1-card" : discardRule === "hand-flop-turn" ? "1-pair" : "none",
+            turn: discardRule === "progressive-1" ? "1-card" : discardRule === "hand-flop-turn" ? "1-pair" : discardRule === "hand-turn" ? "1-triple" : "none",
+            river: discardRule === "progressive-1" ? "1-card" : "none"
+          },
+          showdown: showdownRule
+        }
+      };
+
+      variants.unshift(newVariant);
+      saveVariants();
+      closeModal("addModal");
+      showToast(`"${name}" added to library and ready to mix!`);
+    }
+
+    /* ==========================================================================
+       6. MASTER QUICK-REFERENCE TABLE & GITHUB SYNC
+       ========================================================================== */
+    function renderMasterTable() {
+      const tbody = document.getElementById("masterQuickRefBody");
+      tbody.innerHTML = variants.map(v => {
+        const badgeClass = v.origin === "core" ? "tag-core" : v.origin === "hybrid" ? "tag-hybrid" : "tag-custom";
+        const badgeText = v.origin === "core" ? "Core" : v.origin === "hybrid" ? "Hybrid" : "Custom";
+        return `
+          <tr>
+            <td><strong>${escapeHtml(v.name)}</strong></td>
+            <td><span class="tag-badge ${badgeClass}">${badgeText}</span></td>
+            <td>${escapeHtml(v.quickDeal)}</td>
+            <td>${escapeHtml(v.quickBoard)}</td>
+            <td>${escapeHtml(v.quickMechanic)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function openSyncModal() {
+      document.getElementById("syncModal").classList.add("open");
+    }
+
+    function downloadVariantsJson() {
+      const dataStr = JSON.stringify(variants, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "variants.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Downloaded variants.json! Upload it to your GitHub repo root.");
+    }
+
+    function copyVariantsJson() {
+      navigator.clipboard.writeText(JSON.stringify(variants, null, 2))
+        .then(() => showToast("Library JSON copied to clipboard!"));
+    }
+
+    function importVariantsJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (!Array.isArray(imported)) throw new Error("Invalid format");
+          const existingIds = new Set(variants.map(v => v.id));
+          let count = 0;
+          imported.forEach(item => {
+            if (item && item.id && item.name && !existingIds.has(item.id)) {
+              variants.push(item);
+              count++;
+            }
+          });
+          saveVariants();
+          closeModal("syncModal");
+          showToast(`Imported ${count} new variant(s)!`);
+        } catch (err) {
+          showToast("Invalid variants.json file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetLibrary() {
+      if (!confirm("Reset browser storage back to the 12 core rulebook variants?")) return;
+      variants = structuredClone(CORE_VARIANTS);
+      mixerSelection = [];
+      saveVariants();
+      closeModal("syncModal");
+      showToast("Library reset to the 12 core variants.");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
+      backdrop.addEventListener("click", e => {
+        if (e.target === backdrop) backdrop.classList.remove("open");
+      });
+    });
+
+    initApp();
+  </script>
+</body>
+</html>
